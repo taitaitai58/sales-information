@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>マイナビ架電リスト収集ツール</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 16px;
+        background-color: #f5f5f7;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .description {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 16px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      button {
+        padding: 8px 14px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      button.primary {
+        background-color: #007aff;
+        color: white;
+      }
+
+      button.secondary {
+        background-color: #e5e5ea;
+        color: #333;
+      }
+
+      button.danger {
+        background-color: #ff3b30;
+        color: white;
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+
+      .log-container {
+        margin-top: 12px;
+      }
+
+      .csv-preview-container {
+        margin-top: 12px;
+      }
+
+      .csv-preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+
+      #csvPreview {
+        height: 180px;
+      }
+
+      .settings-container {
+        margin-top: 4px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        border: 1px solid #d1d1d6;
+      }
+
+      .log-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 400px;
+        resize: none;
+        font-family: Menlo, Monaco, 'SF Mono', Consolas, monospace;
+        font-size: 11px;
+        padding: 8px;
+        box-sizing: border-box;
+        border-radius: 6px;
+        border: 1px solid #d1d1d6;
+        background-color: #fff;
+      }
+
+      .setting-group {
+        margin-bottom: 10px;
+      }
+
+      .setting-label {
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 2px;
+        display: block;
+      }
+
+      .setting-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: 1px solid #d1d1d6;
+        font-size: 12px;
+        margin-bottom: 2px;
+      }
+
+      .setting-input:focus {
+        outline: none;
+        border-color: #007aff;
+        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15);
+      }
+
+      .setting-description {
+        font-size: 11px;
+        color: #666;
+        line-height: 1.4;
+      }
+
+      .settings-note {
+        font-size: 11px;
+        color: #888;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>マイナビ架電リスト収集ツール</h1>
+    <div class="description">
+      「スクレイピング開始」を押すとブラウザが起動します。マイページにログイン後、「ログイン完了」を押してください。
+    </div>
+
+    <div class="controls">
+      <button id="start" class="primary">スクレイピング開始</button>
+      <button id="loginDone" class="secondary" disabled>ログイン完了（Enter 送信）</button>
+      <button id="stop" class="danger" disabled>停止</button>
+    </div>
+
+    <div style="margin-top: 16px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px;">
+      <div>
+        <div class="log-container">
+          <div class="log-header">
+            <span>ログ</span>
+            <button id="clearLog" class="secondary">クリア</button>
+          </div>
+          <textarea id="log" readonly></textarea>
+        </div>
+        <div class="csv-preview-container">
+          <div class="csv-preview-header">
+            <span>CSVプレビュー</span>
+            <button id="reloadCsv" class="secondary">CSVを読み込む</button>
+          </div>
+          <textarea id="csvPreview" readonly placeholder="CSV_PATH で指定したCSVの中身をここに表示します。"></textarea>
+        </div>
+      </div>
+      <div>
+        <div class="log-header">
+          <span>設定</span>
+          <div>
+            <button id="loadConfig" class="secondary">設定を再読込</button>
+            <button id="saveConfig" class="primary">設定を保存</button>
+          </div>
+        </div>
+        <div class="settings-container">
+          <div class="setting-group">
+            <label for="searchUrl" class="setting-label">検索URL（SEARCH_URL）</label>
+            <input id="searchUrl" class="setting-input" type="text" />
+            <div class="setting-description">
+              マイナビの検索結果ページのURLです。マイナビの画面で条件を指定して、表示された検索結果ページのURLをコピー＆ペーストします。
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label for="startPage" class="setting-label">開始ページ（START_PAGE）</label>
+            <input id="startPage" class="setting-input" type="number" min="1" />
+            <div class="setting-description">
+              何ページ目からスクレイピングを開始するかを指定します。通常は <code>1</code> のままで問題ありません。
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label for="maxCompanies" class="setting-label">取得件数上限（MAX_COMPANIES）</label>
+            <input id="maxCompanies" class="setting-input" type="number" min="1" />
+            <div class="setting-description">
+              一回の実行でCSVに追加する企業の最大数を指定します。未指定の場合は制限なしです。
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label for="spreadsheetUrl" class="setting-label">スプレッドシートURL（SPREADSHEET_URL）</label>
+            <input id="spreadsheetUrl" class="setting-input" type="text" />
+            <div class="setting-description">
+              連携先の Google スプレッドシートのURLです。営業チームで共有しているスプレッドシートのURLを指定します。
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label for="csvPath" class="setting-label">CSVファイル名（CSV_PATH）</label>
+            <input id="csvPath" class="setting-input" type="text" />
+            <div class="setting-description">
+              出力するCSVファイルの名前です。標準では <code>mynavi_internships.csv</code> になっています。
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label for="gasUploadUrl" class="setting-label">GASアップロードURL（GAS_UPLOAD_URL）</label>
+            <input id="gasUploadUrl" class="setting-input" type="text" />
+            <div class="setting-description">
+              Google スプレッドシートにデータを送るための Google Apps Script（GAS）のWebアプリURLです。スプレッドシート連携を使う場合のみ設定します。
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label for="gasUploadToken" class="setting-label">GASトークン（GAS_UPLOAD_TOKEN）</label>
+            <input id="gasUploadToken" class="setting-input" type="text" />
+            <div class="setting-description">
+              GAS側で簡易認証に使うトークン文字列です。GAS内の <code>AUTH_TOKEN</code> と同じ値を設定してください。
+            </div>
+          </div>
+
+          <div class="settings-note">
+            ※ 詳しい意味が分からない項目がある場合は、この画面をスクリーンショットして IT 担当者に相談してください。
+          </div>
+        </div>
+        <div id="configStatus" class="description" style="margin-top: 4px;"></div>
+      </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
+
+
