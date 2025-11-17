@@ -2,13 +2,12 @@ const { contextBridge, ipcRenderer } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
-const CONFIG_PATH = path.join(__dirname, 'mynavi-config.json');
+const CONFIG_PATH = path.join(__dirname, 'rikunabi-config.json');
 const CSV_BASE_DIR = __dirname;
 
 try {
   contextBridge.exposeInMainWorld('electronAPI', {
     startScraper: () => ipcRenderer.invoke('scraper:start'),
-    sendEnter: () => ipcRenderer.invoke('scraper:enter'),
     stopScraper: () => ipcRenderer.invoke('scraper:stop'),
 
     loadConfig: () => {

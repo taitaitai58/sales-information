@@ -2,7 +2,7 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>マイナビ架電リスト収集ツール</title>
+    <title>リクナビ架電リスト収集ツール</title>
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -146,14 +146,13 @@
     </style>
   </head>
   <body>
-    <h1>マイナビ架電リスト収集ツール</h1>
+    <h1>リクナビ架電リスト収集ツール</h1>
     <div class="description">
-      「スクレイピング開始」を押すとブラウザが起動します。マイページにログイン後、「ログイン完了」を押してください。
+      「スクレイピング開始」を押すとブラウザが起動します。ログインは不要です。
     </div>
 
     <div class="controls">
       <button id="start" class="primary">スクレイピング開始</button>
-      <button id="loginDone" class="secondary" disabled>ログイン完了（Enter 送信）</button>
       <button id="stop" class="danger" disabled>停止</button>
     </div>
 
@@ -187,7 +186,7 @@
             <label for="searchUrl" class="setting-label">検索URL（SEARCH_URL）</label>
             <input id="searchUrl" class="setting-input" type="text" />
             <div class="setting-description">
-              マイナビの検索結果ページのURLです。マイナビの画面で条件を指定して、表示された検索結果ページのURLをコピー＆ペーストします。
+              リクナビの検索結果ページのURLです。リクナビの画面で条件を指定して、表示された検索結果ページのURLをコピー＆ペーストします。
             </div>
           </div>
 
@@ -219,7 +218,7 @@
             <label for="csvPath" class="setting-label">CSVファイル名（CSV_PATH）</label>
             <input id="csvPath" class="setting-input" type="text" />
             <div class="setting-description">
-              出力するCSVファイルの名前です。標準では <code>mynavi_internships.csv</code> になっています。
+              出力するCSVファイルの名前です。標準では <code>rikunabi_companies.csv</code> になっています。
             </div>
           </div>
 

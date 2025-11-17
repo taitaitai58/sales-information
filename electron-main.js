@@ -45,7 +45,7 @@ function startScraper() {
 
   // 設定ファイルから MAX_COMPANIES を読み取る
   const fs = require('fs');
-  const configPath = path.join(__dirname, 'mynavi-config.json');
+  const configPath = path.join(__dirname, 'rikunabi-config.json');
   let maxCompanies = undefined;
   try {
     if (fs.existsSync(configPath)) {
@@ -61,7 +61,7 @@ function startScraper() {
 
   const isWin = process.platform === 'win32';
   const cmd = isWin ? 'npx.cmd' : 'npx';
-  const args = ['ts-node', 'scrape-mynavi.ts'];
+  const args = ['ts-node', 'scrape-rikunabi.ts'];
 
   // 環境変数として MAX_COMPANIES を渡す
   const env = { ...process.env };
@@ -104,15 +104,6 @@ function startScraper() {
   });
 }
 
-function sendEnterToScraper() {
-  if (!scraperProcess || scraperProcess.killed || !scraperProcess.stdin.writable) {
-    sendToRenderer('log', 'スクレイピングプロセスが動作していないため、Enter を送信できません。');
-    return;
-  }
-  scraperProcess.stdin.write('\n');
-  sendToRenderer('log', '[Electron] Enter キーをスクレイピングプロセスに送信しました。');
-}
-
 function stopScraper() {
   if (!scraperProcess || scraperProcess.killed) {
     sendToRenderer('log', 'スクレイピングプロセスはすでに停止しています。');
@@ -150,10 +141,6 @@ app.on('window-all-closed', () => {
 // IPC handlers
 ipcMain.handle('scraper:start', () => {
   startScraper();
-});
-
-ipcMain.handle('scraper:enter', () => {
-  sendEnterToScraper();
 });
 
 ipcMain.handle('scraper:stop', () => {

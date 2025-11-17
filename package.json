@@ -1,11 +1,11 @@
 {
   "name": "sales-information",
   "version": "1.0.0",
-  "description": "マイナビ架電リスト収集ツール（Electron アプリ）",
+  "description": "リクナビ架電リスト収集ツール（Electron アプリ）",
   "main": "electron-main.js",
   "scripts": {
     "start": "electron .",
-    "scrape:mynavi": "ts-node scrape-mynavi.ts",
+    "scrape:rikunabi": "ts-node scrape-rikunabi.ts",
     "dist": "electron-builder"
   },
   "repository": {
@@ -21,14 +21,14 @@
   "homepage": "https://github.com/Z-alpha-inc/sales-information#readme",
   "build": {
     "appId": "com.z-alpha.sales-information",
-    "productName": "マイナビ架電リスト収集ツール",
+    "productName": "リクナビ架電リスト収集ツール",
     "files": [
       "electron-main.js",
       "preload.js",
       "renderer.js",
       "index.html",
-      "scrape-mynavi.ts",
-      "mynavi-config.json",
+      "scrape-rikunabi.ts",
+      "rikunabi-config.json",
       "gasscript.js",
       "run.sh",
       "node_modules/**",

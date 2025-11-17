@@ -3,7 +3,7 @@
 set -e
 
 echo "=== 営業向け 自動セットアップ＆GUI 起動スクリプト ==="
-echo "このまま待てば自動で環境構築 → マイナビ架電リスト収集ツール(Electron) を起動します。"
+echo "このまま待てば自動で環境構築 → リクナビ架電リスト収集ツール(Electron) を起動します。"
 echo
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -41,7 +41,7 @@ echo "2/3: Playwright のブラウザを準備します（初回のみ）..."
 npx playwright install chromium
 
 echo
-echo "3/3: マイナビ架電リスト収集ツール(Electron アプリ)を起動します。"
+echo "3/3: リクナビ架電リスト収集ツール(Electron アプリ)を起動します。"
 echo "ウィンドウが開いたら、画面のボタンに従って操作してください。"
 echo
 

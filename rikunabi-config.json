@@ -1,8 +1,8 @@
 {
-  "SEARCH_URL": "https://job.mynavi.jp/27/pc/corpinfo/searchCorpListByGenCond/index/?cond=ID:60000,61050,61100,61300,61500,62000,72000,64100,74500,70000,65100,71000,68000,75000,66000,73000,74000",
+  "SEARCH_URL": "https://job.rikunabi.com/2026/s/?ms=0&b=68&b=69&b=70&b=77&b=78&b=72&b=73&b=71&b=74&b=76&b=75&b=79&isc=r21rcnc01260",
   "START_PAGE": 1,
   "SPREADSHEET_URL": "https://docs.google.com/spreadsheets/d/1Tg0NLQ4ByXFG2B1fInsuplf3UyMZSdIXBAD6PN9jtOs/edit",
-  "CSV_PATH": "mynavi_internships.csv",
+  "CSV_PATH": "rikunabi_companies.csv",
   "GAS_UPLOAD_URL": "https://script.google.com/macros/s/AKfycbwHYKDtweNBrEKWDqpF-z0Zfa-LLks6E4n5F6Pra7-6z9NJPsUuMhV5RuUJMbgQKsix/exec",
   "GAS_UPLOAD_TOKEN": "change-me",
   "MAX_COMPANIES": 10

@@ -2,7 +2,6 @@
 
 const logArea = document.getElementById('log');
 const startButton = document.getElementById('start');
-const loginDoneButton = document.getElementById('loginDone');
 const stopButton = document.getElementById('stop');
 const clearLogButton = document.getElementById('clearLog');
 const configStatus = document.getElementById('configStatus');
@@ -36,7 +35,7 @@ function applyConfigToForm(config) {
   if (startPageInput) startPageInput.value = config.START_PAGE != null ? String(config.START_PAGE) : '1';
   if (maxCompaniesInput) maxCompaniesInput.value = config.MAX_COMPANIES != null ? String(config.MAX_COMPANIES) : '';
   if (spreadsheetUrlInput) spreadsheetUrlInput.value = config.SPREADSHEET_URL ?? '';
-  if (csvPathInput) csvPathInput.value = config.CSV_PATH ?? 'mynavi_internships.csv';
+  if (csvPathInput) csvPathInput.value = config.CSV_PATH ?? 'rikunabi_companies.csv';
   if (gasUploadUrlInput) gasUploadUrlInput.value = config.GAS_UPLOAD_URL ?? '';
   if (gasUploadTokenInput) gasUploadTokenInput.value = config.GAS_UPLOAD_TOKEN ?? '';
 }
@@ -51,7 +50,7 @@ function collectConfigFromForm() {
     SEARCH_URL: searchUrlInput ? searchUrlInput.value.trim() : '',
     START_PAGE: Number.isFinite(startPage) && startPage > 0 ? startPage : 1,
     SPREADSHEET_URL: spreadsheetUrlInput ? spreadsheetUrlInput.value.trim() : '',
-    CSV_PATH: csvPathInput ? csvPathInput.value.trim() || 'mynavi_internships.csv' : 'mynavi_internships.csv',
+    CSV_PATH: csvPathInput ? csvPathInput.value.trim() || 'rikunabi_companies.csv' : 'rikunabi_companies.csv',
     GAS_UPLOAD_URL: gasUploadUrlInput ? gasUploadUrlInput.value.trim() : '',
     GAS_UPLOAD_TOKEN: gasUploadTokenInput ? gasUploadTokenInput.value.trim() : '',
   };
@@ -75,22 +74,15 @@ function setRunningState(running) {
   if (running) {
     startButton.disabled = true;
     stopButton.disabled = false;
-    loginDoneButton.disabled = false;
   } else {
     startButton.disabled = false;
     stopButton.disabled = true;
-    loginDoneButton.disabled = true;
   }
 }
 
 startButton.addEventListener('click', async () => {
   appendLog('スクレイピングの起動を要求しました。');
   await window.electronAPI.startScraper();
-});
-
-loginDoneButton.addEventListener('click', async () => {
-  appendLog('「ログイン完了」ボタンから Enter を送信します。');
-  await window.electronAPI.sendEnter();
 });
 
 stopButton.addEventListener('click', async () => {
@@ -112,7 +104,7 @@ reloadCsvButton.addEventListener('click', () => {
     return;
   }
 
-  const csvPath = csvPathInput.value.trim() || 'mynavi_internships.csv';
+  const csvPath = csvPathInput.value.trim() || 'rikunabi_companies.csv';
   const result = window.electronAPI.readCsv(csvPath);
 
   if (result.ok) {
